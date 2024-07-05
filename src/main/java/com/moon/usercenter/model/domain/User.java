@@ -76,6 +76,6 @@ public class User implements Serializable {
      */
     private Integer deleted;
 
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+    //@TableField(exist = false)
+    //private static final long serialVersionUID = 1L;
 }
