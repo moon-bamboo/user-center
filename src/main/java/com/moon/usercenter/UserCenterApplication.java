@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.Assert;
 
 @SpringBootApplication
-@MapperScan("com.moon.usercenter")
+@MapperScan("com.moon.usercenter.mapper")
 public class UserCenterApplication {
 
     public static void main(String[] args) {
