@@ -2,6 +2,7 @@ package com.moon.usercenter.service;
 
 import com.moon.usercenter.model.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
 * @author 白月青竹
@@ -19,5 +20,13 @@ public interface UserService extends IService<User> {
      * @return 返回新用户的id
      */
     long userRegister(String userAccount,String userPassword,String checkPassWord);
+
+    /**
+     * 用户登录
+     * @param userAccount 用户账户
+     * @param userPassword 用户密码
+     * @return 返回用户的信息
+     */
+    User userLogin(String userAccount, String userPassword, HttpServletRequest request);
 
 }

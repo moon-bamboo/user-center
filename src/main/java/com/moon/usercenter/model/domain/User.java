@@ -1,9 +1,7 @@
 package com.moon.usercenter.model.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -74,6 +72,7 @@ public class User implements Serializable {
     /**
      * 以逻辑删除替代物理删除，0表示正常，1表示被删除
      */
+    @TableLogic
     private Integer deleted;
 
     //@TableField(exist = false)
