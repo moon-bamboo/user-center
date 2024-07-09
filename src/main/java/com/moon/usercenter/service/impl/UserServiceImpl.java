@@ -1,5 +1,4 @@
 package com.moon.usercenter.service.impl;
-import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,12 +9,13 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.juli.logging.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.moon.usercenter.constant.UserConstant.USER_LOGIN_STATUS;
 
 /**
 * @author 白月青竹
@@ -34,10 +34,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     private static final String salt = "moon";
 
-    /**
-     * 用户登录态
-     */
-    public static final String USER_LOGIN_STATUS="userLoginStatus";
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassWord) {
@@ -119,24 +115,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.info("User login failed,user account or password can't match.");
             return null;
         }
-        //3.记录用户的登录态
-        request.getSession().setAttribute(USER_LOGIN_STATUS,user);
-        //4.脱敏
+        //3.脱敏
+        User safetyUser = getSaftyUser(user);
+
+        //4.记录用户的登录态
+        request.getSession().setAttribute(USER_LOGIN_STATUS,safetyUser);
+
+        return safetyUser;
+    }
+
+    /**
+     * 用户脱敏
+     * @return safetyUser
+     */
+    @Override
+    public User getSaftyUser(User originUser){
+        //脱敏
         User safetyUser=new User();
-        safetyUser.setId(user.getId());//用户id
-        safetyUser.setUserAccount(user.getUserAccount());//用户账号
+        safetyUser.setId(originUser.getId());//用户id
+        safetyUser.setUserAccount(originUser.getUserAccount());//用户账号
         //safetyUser.setUserPassword("");//不返回用户密码
-        safetyUser.setUsername(user.getUsername());//用户昵称
-        safetyUser.setAvatarUrl(user.getAvatarUrl());//用户头像URL
-        safetyUser.setGender(user.getGender());//用户性别
-        safetyUser.setPhone(user.getPhone());//用户手机号
-        safetyUser.setEmail(user.getEmail());//用户email
-        safetyUser.setUserStatus(user.getUserStatus());//用户状态
-        safetyUser.setCreateTime(user.getCreateTime());//创建时间
-        safetyUser.setUpdateTime(user.getUpdateTime());//最后更新时间
+        safetyUser.setUsername(originUser.getUsername());//用户昵称
+        safetyUser.setAvatarUrl(originUser.getAvatarUrl());//用户头像URL
+        safetyUser.setGender(originUser.getGender());//用户性别
+        safetyUser.setPhone(originUser.getPhone());//用户手机号
+        safetyUser.setEmail(originUser.getEmail());//用户email
+        safetyUser.setUserRole((originUser.getUserRole()));//用户角色
+        safetyUser.setUserStatus(originUser.getUserStatus());//用户状态
+        safetyUser.setCreateTime(originUser.getCreateTime());//创建时间
+        safetyUser.setUpdateTime(originUser.getUpdateTime());//最后更新时间
         //safetyUser.setDeleted(0);//不返回Deleted字段
-
-
         return safetyUser;
     }
 }

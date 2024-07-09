@@ -1,10 +1,11 @@
 package com.moon.usercenter.model.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 用户
@@ -55,6 +56,11 @@ public class User implements Serializable {
     private String email;
 
     /**
+     * 用户角色，默认为0，普通用户。1，管理员
+     */
+    private Integer userRole;
+
+    /**
      * 用户状态，非空，默认1，表示正常
      */
     private Integer userStatus;
@@ -75,6 +81,7 @@ public class User implements Serializable {
     @TableLogic
     private Integer deleted;
 
-    //@TableField(exist = false)
-    //private static final long serialVersionUID = 1L;
+    @Serial
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }
